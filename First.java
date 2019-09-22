@@ -12,6 +12,7 @@ class First implements ActionListener {
 	static String path="";
     static int cbselect;
     static String s1[] = {"C++","HTML","Java"};
+    static String filename="";
     static JComboBox ddmenu = new JComboBox(s1);
     public static void setLookFeel() {
     	try {
@@ -158,6 +159,7 @@ public void actionPerformed(ActionEvent e) {
 		int res = sdialog.showSaveDialog(null);
 		if (res == JFileChooser.APPROVE_OPTION) {
 			path = sdialog.getSelectedFile().getAbsolutePath();
+			filename = sdialog.getSelectedFile().getName();			
 			FileWriter f = new FileWriter(path);
 			BufferedWriter bw = new BufferedWriter(f);
 			PrintWriter of = new PrintWriter(bw);
@@ -210,11 +212,31 @@ public static void html(int a) throws IOException {
 
 }
 public static void c() {
-	JOptionPane.showMessageDialog(null, "The Code for compiling C++ source code has not been implemented. Wait for next version", "Error!", JOptionPane.WARNING_MESSAGE);
-	
+	try {
+		Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"g++ "+path+" "+"&& a.exe \"");
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 }
-public static void jav() {
-	JOptionPane.showMessageDialog(null, "The Code for compiling Java source code has not been implemented. Wait for next version", "Error!", JOptionPane.WARNING_MESSAGE);
 	
+	
+
+public static void jav() {
+	String execp = path.replaceFirst(".java", ".class");
+	String javac= "\"C:\\Program Files\\BlueJ\\jdk\\bin\\javac.exe\"";
+	String j = "\"C:\\Program Files\\BlueJ\\jdk\\bin\\java.exe\"";
+	try {
+		Runtime.getRuntime().exec("cmd /c start cmd.exe /K"+javac+" "+path);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	try {
+		Runtime.getRuntime().exec("cmd /c start cmd.exe /K"+j+" "+execp+" "+"timeout 12s");
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 }
 }
