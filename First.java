@@ -159,7 +159,9 @@ public void actionPerformed(ActionEvent e) {
 		int res = sdialog.showSaveDialog(null);
 		if (res == JFileChooser.APPROVE_OPTION) {
 			path = sdialog.getSelectedFile().getAbsolutePath();
-			filename = sdialog.getSelectedFile().getName();			
+			filename = sdialog.getSelectedFile().getName();		
+			filename=filename.replaceFirst(".java","");
+			System.out.println(filename);
 			FileWriter f = new FileWriter(path);
 			BufferedWriter bw = new BufferedWriter(f);
 			PrintWriter of = new PrintWriter(bw);
@@ -179,6 +181,9 @@ public void actionPerformed(ActionEvent e) {
 			String tempdata;
 			f = new FileReader(path);
 			BufferedReader inp = new BufferedReader(f);
+			filename = odialog.getSelectedFile().getName();
+			filename=filename.replaceFirst(".java","");
+			System.out.println(filename);
 			while ((tempdata = inp.readLine()) != null) {
 				tf.append(tempdata + "\n");
 			}
@@ -223,17 +228,25 @@ public static void c() {
 	
 
 public static void jav() {
-	String execp = path.replaceFirst(".java", ".class");
+	String execp = path.replaceFirst(".java", "");
+     execp=execp.replaceFirst(filename, "")+" "+filename;
+     System.out.println(execp);
 	String javac= "\"C:\\Program Files\\BlueJ\\jdk\\bin\\javac.exe\"";
 	String j = "\"C:\\Program Files\\BlueJ\\jdk\\bin\\java.exe\"";
-	try {
+    try {
 		Runtime.getRuntime().exec("cmd /c start cmd.exe /K"+javac+" "+path);
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
-	}
+	}int k=0;
+    for(int i=0;i<100000;i++) {k=k+i; ;System.out.println(k);}
+    
+javaex(execp,j);
+
+}
+public static void javaex(String execp,String j) {
 	try {
-		Runtime.getRuntime().exec("cmd /c start cmd.exe /K"+j+" "+execp+" "+"timeout 12s");
+		Runtime.getRuntime().exec("cmd /c start cmd.exe /K"+j+" "+"-cp"+" "+execp);
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
